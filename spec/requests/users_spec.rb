@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'requests/auth_helper'
+
+RSpec.configure do |c|
+  c.include AuthHelper
+end
 
 RSpec.describe 'Authentication API' do
-  def user_params
-    {
-      email: 'alice@example.com',
-      password: 'foobarbaz',
-      password_confirmation: 'foobarbaz'
-    }
+  before(:all) do
+    User.delete_all
   end
 
   after(:all) do
@@ -16,7 +17,7 @@ RSpec.describe 'Authentication API' do
   end
 
   context 'without an account' do
-    describe 'POST /sign-up' do
+    describe 'POST /sign-up', describe_name: 'signup' do
       it 'creates a new user' do
         post '/sign-up', params: { credentials: user_params }
 
@@ -35,7 +36,7 @@ RSpec.describe 'Authentication API' do
       post '/sign-up', params: { credentials: user_params }
     end
 
-    describe 'POST /sign-in' do
+    describe 'POST /sign-in', describe_name: 'signin' do
       it 'returns a token' do
         post '/sign-in', params: { credentials: user_params }
 
@@ -53,21 +54,17 @@ RSpec.describe 'Authentication API' do
   end
 
   context 'while signed in' do
-    def headers
-      {
-        'HTTP_AUTHORIZATION' => "Token token=#{@token}"
-      }
-    end
 
     before(:each) do
-      post '/sign-up', params: { credentials: user_params }
-      post '/sign-in', params: { credentials: user_params }
-
-      @token = JSON.parse(response.body)['user']['token']
-      @user_id = JSON.parse(response.body)['user']['id']
+      signup_and_in
+      # post '/sign-up', params: { credentials: user_params }
+      # post '/sign-in', params: { credentials: user_params }
+      #
+      # @token = JSON.parse(response.body)['user']['token']
+      # @user_id = JSON.parse(response.body)['user']['id']
     end
 
-    describe 'PATCH /change-password/' do
+    describe 'PATCH /change-password/', describe_name: 'changepw' do
       def new_password_params
         {
           old: 'foobarbaz',
@@ -85,7 +82,7 @@ RSpec.describe 'Authentication API' do
       end
     end
 
-    describe 'DELETE /sign-out/' do
+    describe 'DELETE /sign-out/', describe_name: 'signout' do
       it 'is successful' do
         delete '/sign-out/', headers: headers
 
