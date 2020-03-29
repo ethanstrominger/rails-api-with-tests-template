@@ -48,21 +48,20 @@ RSpec.describe 'Examples', type: :request do
   end
 
   before(:all) do
-    @example = current_user.examples.build(example_params)
-    @example.save
-
+    signup_and_in
     # Example.create!(example_params2)
     # Example.create!(example_params3)
   end
 
-  # after(:all) do
-  #   Example.delete_all
-  # end
+  after(:all) do
+    Example.delete_all
+  end
 
   describe 'GET /examples' do
     it 'lists all examples xxxxxxxx' do
       print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
       print headers
+      print 'asdfasdfadsfdsfsdfasdfsdf'
       get '/examples', headers: headers
       #
       # expect(response).to be_success
