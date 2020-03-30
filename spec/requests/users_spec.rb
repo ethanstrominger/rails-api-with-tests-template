@@ -21,7 +21,7 @@ RSpec.describe 'Authentication API' do
       it 'creates a new user' do
         post '/sign-up', params: { credentials: user_params }
 
-        expect(response).to be_success
+        expect(response).to be_successful
 
         parsed_response = JSON.parse(response.body)
         expect(
@@ -40,7 +40,7 @@ RSpec.describe 'Authentication API' do
       it 'returns a token' do
         post '/sign-in', params: { credentials: user_params }
 
-        expect(response).to be_success
+        expect(response).to be_successful
 
         parsed_response = JSON.parse(response.body)
         expect(
@@ -77,7 +77,7 @@ RSpec.describe 'Authentication API' do
               params: { passwords: new_password_params },
               headers: headers
 
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.body).to be_empty
       end
     end
@@ -86,7 +86,7 @@ RSpec.describe 'Authentication API' do
       it 'is successful' do
         delete '/sign-out/', headers: headers
 
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.body).to be_empty
       end
 
@@ -94,7 +94,7 @@ RSpec.describe 'Authentication API' do
         delete '/sign-out/', headers: headers
         delete '/sign-out/', headers: headers
 
-        expect(response).not_to be_success
+        expect(response).not_to be_successful
       end
     end
   end

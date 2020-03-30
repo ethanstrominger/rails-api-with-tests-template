@@ -5,6 +5,10 @@ module AuthHelper
     }
   end
 
+  def user_id
+    @user_id
+  end
+
   def user_params
     {
       email: 'alice@example.com',
