@@ -1,4 +1,5 @@
-class MoviesController < ApplicationController
+# Template instruction: decide between ProtectedController and OpenReadControler
+class MoviesController < ProtectedController
   before_action :set_movie, only: [:show, :update, :destroy]
 
   # GET /movies
