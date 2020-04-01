@@ -1,3 +1,6 @@
+require_relative '../../lib/debug_helper'
+include DebugHelper
+
 # Template instruction: decide between ProtectedController and OpenReadControler
 class MoviesController < ProtectedController
   before_action :set_movie, only: [:show, :update, :destroy]
@@ -16,7 +19,10 @@ class MoviesController < ProtectedController
 
   # POST /movies
   def create
-    @movie = Movie.new(movie_params)
+    # Template instructions: Add this line to include user id if related to user
+    @movie = current_user.movies.build(movie_params)
+    # Template instructions: If not related to  user, leave as below
+    # @movie = Movie.new(movie_params)
 
     if @movie.save
       render json: @movie, status: :created, location: @movie

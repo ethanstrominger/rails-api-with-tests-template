@@ -4,6 +4,9 @@ require 'rails_helper'
 
 require 'requests/auth_helper'
 
+require 'debug_helper'
+include DebugHelper
+
 RSpec.configure do |c|
   c.include AuthHelper
 end
@@ -16,15 +19,7 @@ RSpec.describe 'Movies', type: :request do
   after(:all) do
     User.delete_all
   end
-
-  def add_user_id (recordObject)
-    recordObject["user_id"] = user_id
-    recordObject
-  end
-
-  str = "30-Aug-2020"
-  sample_date = str.to_date
-
+  sample_date = '2020-12-25'
   movie_params1 = { title: 'Movie 1', director: 'Director 1', year: sample_date }
   movie_params2 = { title: 'Movie 2', director: 'Director 2', year: sample_date }
   movie_params3 = { title: 'Movie 3', director: 'Director 3', year: sample_date }
@@ -44,13 +39,9 @@ RSpec.describe 'Movies', type: :request do
 
   before(:all) do
     signup_and_in
-    add_user_id (movie_params1)
-    add_user_id (movie_params2)
-    add_user_id (movie_params3)
-    Movie.create!(movie_params1)
-    Movie.create!(movie_params2)
-    Movie.create!(movie_params3)
-    add_user_id (new_values)
+    post '/movies', params: { movie: movie_params1 }, headers: headers
+    post '/movies', params: { movie: movie_params1 }, headers: headers
+    post '/movies', params: { movie: movie_params1 }, headers: headers
   end
 
   after(:all) do
