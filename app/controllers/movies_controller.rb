@@ -3,18 +3,31 @@ include DebugHelper
 
 # Template instruction: decide between ProtectedController and OpenReadControler
 class MoviesController < ProtectedController
+  # Template instruction: decide if you wan
   before_action :set_movie, only: [:show, :update, :destroy]
 
   # GET /movies
   def index
-    @movies = Movie.all
+    # Template instruction: decide if you want restricted or unrestricted listing
+    # Template instructions: decide if you want unrestricted access
+    # Below statement gives you unrestricted
+    # @movie = movies.all
+    # Below gives you restricted
+    @movies = current_user.movies.all
 
     render json: @movies
   end
 
   # GET /movies/1
   def show
+    # Template instructions: decide if you want unrestricted access
+    # Below statement gives you unrestricted
+    # @movie = movies.find(params[:id])
+    # Below gives you restricted
+    @movie = current_user.movies.find(params[:id])
+
     render json: @movie
+
   end
 
   # POST /movies
