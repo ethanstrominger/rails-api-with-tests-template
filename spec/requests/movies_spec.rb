@@ -28,7 +28,7 @@ RSpec.describe 'Movies', type: :request do
   movie_params1 = { title: 'Movie 1', director: 'Director 1', year: sample_date }
   movie_params2 = { title: 'Movie 2', director: 'Director 2', year: sample_date }
   movie_params3 = { title: 'Movie 3', director: 'Director 3', year: sample_date }
-
+  new_values = { title: 'New movie', director: 'New director', year: sample_date}
 
   def movies
     Movie.all
@@ -50,6 +50,7 @@ RSpec.describe 'Movies', type: :request do
     Movie.create!(movie_params1)
     Movie.create!(movie_params2)
     Movie.create!(movie_params3)
+    add_user_id (new_values)
   end
 
   after(:all) do
@@ -105,11 +106,6 @@ RSpec.describe 'Movies', type: :request do
   end
 
   describe 'POST /movies' do
-    new_values = {
-      title: 'New movie',
-      director: 'New director',
-      date: sample_date
-    }
     it 'creates an movie' do
       post '/movies', params: { movie: new_values }, headers: headers
       expect(response).to be_successful
